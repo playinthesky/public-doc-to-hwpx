@@ -2,7 +2,52 @@
 
 > 상세 내용은 `SKILL.md` 안의 변경이력 표를 참고. 이 파일은 사용자 친화적 요약.
 
-## 최신 버전: v3.6.11 (2026-05-13)
+## 최신 버전: v3.6.13 (2026-05-27)
+
+### v3.6.13 — Agenda mode 표지/목차 정리
+
+**문제**: `format_full`을 아젠다/회의안으로 쓸 때
+- 표지 결재표를 제거하면 제목까지 사라질 수 있었고
+- 회사명이 두 번 들어가거나 너무 크게 강조되었고
+- 빈 목차 줄/탭-only 단락 때문에 페이지번호와 점선이 어색하게 보였음
+- 일부 본문은 lineseg 캐시 때문에 자간이 비정상적으로 붙어 보였음
+
+**해결**:
+- `scripts/tidy_full_agenda.py` 신규 후처리 강화
+  - 결재표 제거
+  - `결재제목` 셀 안 부제/제목 복원
+  - 회사명 + 날짜를 일반 메타 한 줄로 재배치
+  - 빈 목차 행 제거
+  - 탭만 남은 목차 단락 제거
+  - agenda 문단 `linesegarray` 제거로 자간 재계산 유도
+- `scripts/build_full.py --agenda-mode` 추가
+- `scripts/simulate_pages.py` 수정: 제목 없는 목차 줄에는 페이지번호 미배정
+- `scripts/fix_toc_dots.py` 조정: 탭 폭 `42000 -> 39000`
+
+즉, 이제 `format_full`은 **공문 잔재 없이 회의안/아젠다 표지 + 목차** 쪽으로
+한 단계 더 안정화되었습니다.
+
+## 이전 최신 버전: v3.6.12 (2026-05-27)
+### v3.6.12 — Google Docs 아젠다/보고 구조 보존 매퍼
+
+**문제**: Google Docs 원문이 `HEADING_2/3 + 리스트` 구조인데도 공문형 values로
+억지 재작성되면서, 미팅 아젠다·내부 회의안이 시행문처럼 변형됨.
+
+**해결**: `scripts/map_google_doc_to_full_values.py` 신규.
+- Codex Google Drive `_get_document_text` 응답 JSON을 직접 입력으로 사용
+- `HEADING_1` → 표지 제목
+- `HEADING_2` → 장(章) / 본문 절
+- `HEADING_3` → 하위 섹션
+- 리스트 항목 → 본문 항목·세부·주석 / 일정표 셀로 매핑
+
+**회귀 예시 추가**:
+- `examples/google_doc_jejuda_agenda.json`
+- `examples/example_values_full_jejuda_agenda.json`
+
+즉, 공문이 아닌 **아젠다·내부 보고용 HWPX** 는 이제 공문 빌더가 아니라
+`format_full` 기반 구조 보존 매퍼로 시작하는 것이 기본 경로입니다.
+
+## 이전 최신 버전: v3.6.11 (2026-05-13)
 
 ### v3.6.11 — 1p 보고서 마커 자동 정규화
 

@@ -37,7 +37,7 @@ import zipfile
 from pathlib import Path
 
 # 모든 width 를 이 값으로 통일. 양식의 목차 단락 horzsize=43000 보다 약간 작게.
-UNIFIED_WIDTH = 42000
+UNIFIED_WIDTH = 39000
 
 
 def fix_toc_dot_widths(xml: str, target_width: int = UNIFIED_WIDTH) -> tuple:

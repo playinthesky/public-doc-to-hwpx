@@ -177,6 +177,8 @@ def main():
                         help="skeleton_mapping.json (페이지번호 매핑용)")
     parser.add_argument("--strict", action="store_true",
                         help="위계·마커 위반 발견 시 빌드 중단")
+    parser.add_argument("--agenda-mode", action="store_true",
+                        help="회의안/아젠다용 후처리 적용 (표지 결재표 제거, 빈 목차행 제거)")
     args = parser.parse_args()
 
     values_path = Path(args.values).resolve()
@@ -254,6 +256,9 @@ def main():
         sys.exit(1)
     if not run_script("ensure_body_anchor.py", str(output_path)):
         sys.exit(1)
+    if args.agenda_mode:
+        if not run_script("tidy_full_agenda.py", str(output_path)):
+            sys.exit(1)
     # v3.6.0: 표지 큰 제목이 셀 너비 초과 시 한글2018에서 자간 압축으로 깨지는 문제 방지
     if not run_script("wrap_long_titles.py", str(output_path), "--format", "full"):
         sys.exit(1)

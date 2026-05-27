@@ -167,6 +167,9 @@ def make_values_for_toc_pages(skeleton_mapping_path: str,
 
         # 페이지번호 슬롯 (원본 텍스트가 숫자)
         if s["original_text"].strip().isdigit():
+            prev_token = f"목차_항목_{idx - 1:03d}"
+            if not user_values.get(prev_token, "").strip():
+                continue
             if current_chapter in chapter_pages:
                 values[token] = str(chapter_pages[current_chapter])
     return values

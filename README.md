@@ -202,7 +202,9 @@ public-doc-to-hwpx/
 │   ├── split_gongmun_paragraphs.py            ★ v3.6.4/3.6.6 — placeholder 강제 분리
 │   ├── fix_skeleton_defects.py                ★ v3.6.6/3.6.10 — Skeleton 양식 결함 자동 보정
 │   ├── expand_gongmun_body.py                 ★ v3.6.7~3.6.10 — 공문 본문 위계 동적 확장
-│   └── normalize_1p_markers.py                ★ v3.6.11 — 1p 보고서 마커(◦/-/*) 자동 정규화
+│   ├── normalize_1p_markers.py                ★ v3.6.11 — 1p 보고서 마커(◦/-/*) 자동 정규화
+│   ├── map_google_doc_to_full_values.py       ★ v3.6.12 — Google Docs 아젠다/보고 구조를 format_full values 로 변환
+│   └── tidy_full_agenda.py                    ★ v3.6.13 — agenda 표지/목차 후처리
 │
 ├── templates/
 │   ├── _skeleton.hwpx                         폴백 베이스 (한컴 표준 메타파일 준수)
@@ -239,7 +241,9 @@ public-doc-to-hwpx/
 ├── examples/                                  예시 values.json
 │   ├── example_values_1p.json                 ★ v3.6.11 — 1페이지 보고서 예시 (마커 입력 자유)
 │   ├── example_values_gongmun.json            시행문 예시 (모든 7개 위계 활용)
-│   └── example_values_full.json               풀버전 보고서 예시 (127슬롯)
+│   ├── example_values_full.json               풀버전 보고서 예시 (127슬롯)
+│   ├── google_doc_jejuda_agenda.json          ★ v3.6.12 — Google Docs paragraph fixture
+│   └── example_values_full_jejuda_agenda.json ★ v3.6.12 — 아젠다형 format_full 매핑 예시
 │
 └── assets/
     └── public_doc_to_hwpx_skill_pipeline.svg  작동 구조 설명 다이어그램
@@ -441,6 +445,7 @@ globs: ["*.hwpx", "*.md", "*.docx"]
 | 2026-05-07 | 3.3.1 | 풀버전 목차 표준화 (outline_guide.md, 11가지 보고 유형) |
 | 2026-05-13 | **3.4.0** | **공공기관 문서서식 유지 방식 통합** — 6단계 파이프라인으로 전환, 양식 슬롯 매핑 도입, templates 구조 재정리, 내장 표준 양식 추가 |
 | 2026-05-13 | **3.5.0** | **풀버전 4대 함정 자동 검사** — build_full.py 신규 (위계 위반·빈 슬롯·마커 중복·페이지번호 미반영 해결), simulate_pages --values 인자 추가 |
+| 2026-05-27 | **3.6.13** | **Agenda mode 안정화** — Google Docs agenda/report 매퍼, agenda 표지 결재표 제거 + 제목 복원, 회사명/날짜 메타 재배치, 빈 TOC 행 제거, 탭 폭 조정, lineseg 캐시 제거 (상세: [CHANGES.md](CHANGES.md)) |
 | 2026-05-14 | **3.6.0~3.6.11** | **양식별 핫픽스 누적 보정** — 표지·공문 제목 자간 압축 해소(wrap_long_titles.py), 목차 점선 깨짐 자동 보정(fix_toc_dots.py), 공문 본문 모든 위계 동적 확장(expand_gongmun_body.py), Skeleton 결함 자동 보정(fix_skeleton_defects.py), 1p 보고서 마커 자동 정규화(normalize_1p_markers.py) 등 다수 핫픽스 (상세: [CHANGES.md](CHANGES.md)) |
 
 ---
